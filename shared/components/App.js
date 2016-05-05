@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 @connect(state => (
   {
-    loading: state.loadingReducer
+    loading: state.loading
   }
 ))
 export class App extends React.Component {
@@ -15,7 +15,7 @@ export class App extends React.Component {
     }
 
     return (
-      <section>
+      <section className="Wrapper">
         { this.props.children }
         { isLoading() }
       </section>

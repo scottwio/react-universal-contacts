@@ -33,17 +33,19 @@ const webpackConfig = {
 }
 
 // entry
-webpackConfig.entry = [
-  'webpack-dev-server/client?http://127.0.0.1:8080/',
-  'webpack/hot/only-dev-server',
-  './client',
-  './shared/assets/scss'
-];
+webpackConfig.entry = {
+  bundle:[
+    'webpack-dev-server/client?http://127.0.0.1:8080/',
+    'webpack/hot/only-dev-server',
+    './client',
+  ],
+  styles:'./shared/assets/scss'
+};
 
 //output
 webpackConfig.output = {
   path: path.join(__dirname, 'dist'),
-  filename: 'bundle.js'
+  filename: '[name].js'
 };
 
 // Plugins

@@ -12,6 +12,9 @@ import { fromJS } from 'immutable';
 import { applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
+
+document.getElementsByTagName('body')[0].classList.add('is-client-rendered')
+
 /**
  * inital state passed by the server
  */

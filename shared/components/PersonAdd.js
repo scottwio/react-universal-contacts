@@ -13,12 +13,6 @@ export class PersonAdd extends React.Component {
     this.state = {
       canSubmit: false,
       form: {}
-    }  
-    
-  }
-  componentDidMount(){
-    if(this.props.edit){
-      this.state.form = this.props.person
     }
   }
   enableButton() {
@@ -32,17 +26,28 @@ export class PersonAdd extends React.Component {
     });
   }
   submit(model) {
+    let person = {
+      firstName: model.firstName,
+      lastName: model.lastName,
+      phone: model.phone
+    };
+    
     if (this.props.edit){
-      console.log('You edited something...')
+      person.id = parseInt(this.props.id);
+      this.props.updatePersonAsync(this.props.id, person);
     } else{
-      this.props.AddPerson({
-        firstName: model.firstName,
-        lastName: model.lastName,
-        phone: model.phone
-      }); 
+      this.props.addPersonAsync(person); 
     }
   }
+  assignDataToFrom(){
+    if(this.props.edit){
+      this.state.form = this.props.person
+    }
+    return this.state.form;
+  }
   render() {
+    this.assignDataToFrom();
+    
     let addOrEdit = () =>{
       if(this.props.edit){
         return (<h3>Edit this person</h3>);  
@@ -54,7 +59,6 @@ export class PersonAdd extends React.Component {
     
     return (
       <Formsy.Form onValidSubmit={this.submit.bind(this)} onValid={this.enableButton.bind(this)} onInvalid={this.disableButton.bind(this)}>
-        <hr/>
         {addOrEdit()}
         <div>
           <label htmlFor="firstName">First Name</label>

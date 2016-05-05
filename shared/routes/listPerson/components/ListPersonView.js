@@ -1,7 +1,7 @@
 import React from 'react';
 import {PersonList} from 'components/personList';
 import {PersonAdd} from 'components/PersonAdd';
-import * as PersonsActions from 'actions/person.action';
+import * as personAction from 'actions/personAction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -12,19 +12,25 @@ import { connect } from 'react-redux';
  */
 @connect(state => (
   { 
-    persons: state.personsReducer
+    persons: state.persons
   }
 ))
 export class ListPersonView extends React.Component {
-  componentDidMount() {
-    this.props.dispatch(PersonsActions.getPersonsAsync())
+  componentWillMount() {
+    this.props.dispatch(personAction.getPersonsAsync());
   }
   render(){    
     const {dispatch} = this.props;
     return (
       <div>
-        <PersonList {...bindActionCreators(PersonsActions, dispatch)} persons={this.props.persons} />
-        <PersonAdd  {...bindActionCreators(PersonsActions, dispatch)} ></PersonAdd>
+        <PersonList 
+          {...bindActionCreators(personAction, dispatch)} 
+          persons={this.props.persons}
+          edit="true" 
+          />
+        <PersonAdd  
+          {...bindActionCreators(personAction, dispatch)}
+         />
       </div>
     )
   }

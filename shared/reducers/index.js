@@ -1,3 +1,3 @@
-export { default as personsReducer } from './person.reducer';
-export { personReducer } from './person.reducer';
-export { default as loadingReducer } from './global.reducer';
+export { default as persons } from './personReducer';
+export { person } from './personReducer';
+export { default as loading } from './globalReducer';

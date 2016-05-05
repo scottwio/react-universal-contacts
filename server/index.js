@@ -8,19 +8,29 @@ import createLocation from 'history/lib/createLocation';
 // redux
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import applyMiddleware from 'redux-universal';
 
 // ours
-import fetchComponentData from 'lib/fetchComponentData';
 import routes from 'routes';
 import * as reducers from 'reducers';
-
 import api from './api';
- 
+import bodyParser from 'body-parser';
+
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 app.use('/api/', api);
 
 app.use('/assets', express.static('shared/assets'));
+app.get('/', (req, res) => {
+  res.redirect('/list');
+})
+
 
 /**
  * Render our response
@@ -34,7 +44,11 @@ app.use((req, res) => {
    * Redux bring in reducers and stores
    */
   const reducer = combineReducers(reducers);
-  const store = createStore(reducer);
+  const createStoreWithMiddlewares = applyMiddleware(thunk)(createStore);
+  function configureStore(initialState = {}) {
+    return createStoreWithMiddlewares(reducer, initialState);
+  }
+  const store = configureStore();
 
   /**
    * User react-router to match the current
@@ -49,61 +63,48 @@ app.use((req, res) => {
     }
 
     // 404 if not found
-    if (!renderProps) return res.status(404).end('Not found');
-
-    function renderView() {
-      /**
-       * Contiune on if everything is good render the page
-       * and being in the routing context from react-router
-       * pass along renderProps
-       *
-       * <Provider> is from redux this injects our stores through
-       * the component tree
-       */
-      const initialState = store.getState();
-
-      /**
-       * Use react-router to render the correct router
-       * and spread out our router props into the route
-       */
-      const InitialComponent = (
-        <Provider store={store}>
-          <RoutingContext {...renderProps} />
-        </Provider>
-      );
-
-      const componentHTML = renderToString(InitialComponent);
-      const HTML = `
-      <!DOCTYPE html>
+    if (!renderProps) {
+      return res.status(404).end('Not found');
+    }
+    
+    const InitialComponent = (
+      <Provider store={store}>
+        <RoutingContext {...renderProps} />
+      </Provider>
+    );
+    
+  function renderHtml(html, initialState) {
+    return `<!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
-            <title>Isomorphic Redux Demo</title>
+            <title>Person editor</title>
+            <script type="application/javascript" src="/styles.js"></script>
           </head>
           <body>
-            <div id="app">${componentHTML}</div>
-          </body>
-          <script type="application/javascript">
+            <div id="app">
+            <div>
+            ${html}
+            </div>
+            </div>
+          <script>
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
           </script>
           <script type="application/javascript" src="/bundle.js"></script>
-      </html>`
+        </body>
+      </html>`;
+  }
+    
+  store.renderUniversal(renderToString, InitialComponent)
+    .then(({ output }) => {
+      const state = store.getState();
+      res.send(renderHtml(output, state));
+    })
+    .catch(({ output, error }) => {
+      const state = store.getState();
+      res.send(renderHtml(output, state));
+    });
 
-      return HTML;
-    };
-
-    /**
-    * The script tag gives us access to the
-    * state on the client under window.__INITIAL_STATE__
-    * here we fetch the data needed for each of the components 
-    * that we are rendering and then we send the resulting data
-    * to express for it to render
-    */
-    fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
-      .then(renderView)
-      .then(html => res.end(html))
-      .catch(err => res.end(err.message));
-      
   });
 });
 
