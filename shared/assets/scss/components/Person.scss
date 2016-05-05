@@ -1,0 +1,19 @@
+.Person {
+  padding:10px;
+  margin:10px;
+  position:relative;
+  background-color:#ffffff;
+  border-radius: 10px;
+  box-shadow: 3.4px 5px 24px rgba(0, 0, 0, 0.2);
+  > h3{
+    margin:0;
+  }
+}
+
+.Person-details{
+  > a{
+    position: absolute;
+    top:10px;
+    right:10px;
+  }
+}

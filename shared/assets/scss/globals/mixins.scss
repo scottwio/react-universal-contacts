@@ -1,0 +1,12 @@
+@mixin x-retinaImg($name, $extension, $width, $height, $block:false){
+  background: transparent url(../img/#{$name}.#{$extension}) top center no-repeat;
+  @media(-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi) {
+    background: transparent url(../img/#{$name}@2x.#{$extension}) top center no-repeat;
+    background-size: $width $height;
+  }
+   @if $block == true {
+     display:block;
+     height:$height;
+     width:$width;
+   }
+}
