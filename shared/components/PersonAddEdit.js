@@ -1,9 +1,10 @@
 import React from 'react';
 import Formsy from 'formsy-react';
 import TextInput from 'components/TextInput';
+import {browserHistory} from 'react-router';
 
-export class PersonAdd extends React.Component {
-  constructor(){
+export class PersonAddEdit extends React.Component {
+  constructor(props){
     super();
     this.defaultValidation = {
       isDefaultRequiredValue: 'This feild is required',
@@ -24,6 +25,9 @@ export class PersonAdd extends React.Component {
     this.setState({
       canSubmit: false
     });
+  }
+  goBack(e) {
+    browserHistory.goBack();
   }
   submit(model) {
     let person = {
@@ -50,10 +54,17 @@ export class PersonAdd extends React.Component {
     
     let addOrEdit = () =>{
       if(this.props.edit){
-        return (<h3>Edit this person</h3>);  
+        return (
+          <div>
+            <h3>Edit this person</h3>
+            <div><a href="#" onClick={this.goBack.bind(this)}>Go back</a></div>
+          </div>);  
       }
       else{
-        return (<h3>Add a new person</h3>);
+        return (
+          <div>
+            <h3>Add a new person</h3>
+          </div>);
       }
     }
     

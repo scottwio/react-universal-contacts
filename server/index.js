@@ -2,7 +2,7 @@
 import express from 'express';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import {RoutingContext, match} from 'react-router';
+import {RouterContext, match} from 'react-router';
 import createLocation from 'history/lib/createLocation';
 
 // redux
@@ -19,23 +19,35 @@ import bodyParser from 'body-parser';
 
 const app = express();
 
+/**
+ * For reading content returned in body
+ * of a request 
+ */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+/**
+ * Hook up our fake API
+ */
 app.use('/api/', api);
 
+/**
+ * Serve some static assets
+ */
 app.use('/assets', express.static('shared/assets'));
-app.get('/', (req, res) => {
-  res.redirect('/list');
-})
-
 
 /**
- * Render our response
+ * Redirect / to list
  */
+app.get('/', (req, res) => {
+  res.redirect('/list');
+});
 
+/**
+ * Render our response using react
+ */
 app.use((req, res) => {
 
   const location = createLocation(req.url);
@@ -69,41 +81,41 @@ app.use((req, res) => {
     
     const InitialComponent = (
       <Provider store={store}>
-        <RoutingContext {...renderProps} />
+        <RouterContext {...renderProps} />
       </Provider>
     );
     
-  function renderHtml(html, initialState) {
-    return `<!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <title>Person editor</title>
-            <script type="application/javascript" src="/styles.js"></script>
-          </head>
-          <body>
-            <div id="app">
-            <div>
-            ${html}
-            </div>
-            </div>
-          <script>
-            window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
-          </script>
-          <script type="application/javascript" src="/bundle.js"></script>
-        </body>
-      </html>`;
-  }
-    
-  store.renderUniversal(renderToString, InitialComponent)
-    .then(({ output }) => {
-      const state = store.getState();
-      res.send(renderHtml(output, state));
-    })
-    .catch(({ output, error }) => {
-      const state = store.getState();
-      res.send(renderHtml(output, state));
-    });
+    function renderHtml(html, initialState) {
+      return `<!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Person editor</title>
+              <script type="application/javascript" src="/styles.js"></script>
+            </head>
+            <body>
+              <div id="app">
+              <div>
+              ${html}
+              </div>
+              </div>
+            <script>
+              window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
+            </script>
+            <script type="application/javascript" src="/bundle.js"></script>
+          </body>
+        </html>`;
+    }
+      
+    store.renderUniversal(renderToString, InitialComponent)
+      .then(({ output }) => {
+        const state = store.getState();
+        res.send(renderHtml(output, state));
+      })
+      .catch(({ output, error }) => {
+        const state = store.getState();
+        res.send(renderHtml(output, state));
+      });
 
   });
 });

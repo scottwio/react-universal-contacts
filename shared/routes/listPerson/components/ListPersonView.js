@@ -1,6 +1,6 @@
 import React from 'react';
 import {PersonList} from 'components/personList';
-import {PersonAdd} from 'components/PersonAdd';
+import {PersonAddEdit} from 'components/PersonAddEdit';
 import * as personAction from 'actions/personAction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -28,7 +28,7 @@ export class ListPersonView extends React.Component {
           persons={this.props.persons}
           edit="true" 
           />
-        <PersonAdd  
+        <PersonAddEdit
           {...bindActionCreators(personAction, dispatch)}
          />
       </div>

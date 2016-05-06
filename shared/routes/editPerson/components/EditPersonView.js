@@ -1,5 +1,5 @@
 import React from 'react';
-import {PersonAdd} from 'components/PersonAdd';
+import {PersonAddEdit} from 'components/PersonAddEdit';
 import * as personAction from 'actions/personAction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -28,13 +28,13 @@ export class EditPersonView extends React.Component {
           phone={person.phone}
           >
         </Person>
-        <PersonAdd 
+        <PersonAddEdit
           {...bindActionCreators(personAction, dispatch)} 
           person={this.props.person}
           edit="true" 
           id={this.props.params.id}
           >
-        </PersonAdd>
+        </PersonAddEdit>
       </div>
     )
   }

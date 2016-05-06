@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router } from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import { Router, browserHistory } from 'react-router';
 import routes from 'routes';
 
 import { createStore, combineReducers } from 'redux';
@@ -38,18 +37,13 @@ Object
 const reducer = combineReducers(reducers);
 const store = applyMiddleware(thunk)(createStore)(reducer);
 
-/**
- * We would like HTML5 push state URLS
- * not hashs these would be createHashHistory
- */
-const history = createBrowserHistory();
 
 /**
  * Render to the DOM
  */
 render(
     <Provider store={store}>
-      <Router children={routes} history={history} />
+      <Router children={routes} history={browserHistory} />
     </Provider>
   ,
   document.getElementById('app')

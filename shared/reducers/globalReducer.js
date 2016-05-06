@@ -1,7 +1,7 @@
 export default function loading(state = {}, action) {
     switch(action.type) {
       case 'GLOBAL_LOADING':
-      return Object.assign({}, state, action);
+      return {isLoading:action.isLoading};
     }
     return state;
 };

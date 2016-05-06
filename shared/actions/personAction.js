@@ -118,22 +118,24 @@ export function updatePersonAsync(id, person) {
  * DELETE ONE PESON
  */
 
-export function deletePerson(person) {
+export function deletePersonFromList(id) {
   return {
-    type:'DELETE_PERSON',
+    type:'DELETE_PERSON_FROM_LIST',
     payload: {
-      data: person
+      data: {
+        id:id
+      }
     }
   };
 };
 
-export function deletePersonAsync(id, person) {
+export function deletePersonAsync(id) {
   return dispatch => {
     dispatch(loadingAction(true));
-    return request.delete(BACKEND_URL+'person/'+id, person)
+    return request.delete(BACKEND_URL+'person/'+id)
     .then(res => {
       dispatch(loadingAction(false));
-      dispatch(getPersonsAsync());
+      dispatch(deletePersonFromList(id));
       return true;
     })
     .catch(err => {
