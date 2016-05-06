@@ -1,5 +1,10 @@
 # What is this?
-Mainly me playing with react and redux trying to get a feel for how they come together. The little application uses react react-router, redux, redux-universal 
+Mainly me playing with react and redux trying to get a feel for how they come together. The little application uses react react-router, redux, redux-universal
+
+To start the application
+
+    npm install 
+    npm run dev  
 
 # Filenames
 
@@ -65,7 +70,10 @@ Depending on the action you want to make use on of the following get, add, delet
     DELETE_FOOS
 
 ## Top level Routes
-Top level components rendered by the router should be appended with View 
+Top level components rendered by the router should be appended with View
+    
+    FooView.js <-- do
+    Foo.js <-- don't 
 
 ## Consts
 Filenames for consts should be appended with Consts

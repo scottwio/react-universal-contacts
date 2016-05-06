@@ -60,7 +60,6 @@ export function getPersonAsync(id) {
  * ADD ONE PERSON
  */
 export function addPerson(person) {
-  // should be generated on the server
   return {
     type:'ADD_PERSON',
     payload: {
@@ -89,7 +88,6 @@ export function addPersonAsync(person) {
  */
 
 export function updatePerson(person) {
-  // should be generated on the server
   return {
     type:'UPDATE_PERSON',
     payload: {
