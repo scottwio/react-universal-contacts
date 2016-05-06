@@ -1,3 +1,6 @@
+# What is this?
+Mainly me playing with react and redux trying to get a feel for how they come together. The little application uses react react-router, redux, redux-universal 
+
 # Filenames
 
 ## Components
