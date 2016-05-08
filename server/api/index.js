@@ -32,7 +32,8 @@ let getPerson = (id) =>{
     return personObj.id === parseInt(id); 
   });
   
-  if(person.length >= 1) person = person[0]
+  if(person.length >= 1) person = person[0];
+  if(person.length === 0) person = {};
   return person;
 }
 

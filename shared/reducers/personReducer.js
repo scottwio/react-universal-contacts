@@ -10,6 +10,10 @@ export default function persons(state = [], action) {
       let index = findIndex(state, (person) => { 
         return person.id == action.payload.data.id;
       });
+      
+      if(index === -1){
+        return state;  
+      }
       return state
       .slice(0, index)
       .concat(state.slice(index +1));

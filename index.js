@@ -1,5 +1,7 @@
 'use strict';
 
+GLOBAL.__SERVER__ = true;
+
 require('babel/register')({});
 
 var server = require('./server');

@@ -7,9 +7,12 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import * as reducers from 'reducers';
 import { fromJS } from 'immutable';
+import store from 'store';
 
 import { applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+
+window.__SERVER__ = false;
 
 
 document.getElementsByTagName('body')[0].classList.add('is-client-rendered')
@@ -29,14 +32,6 @@ Object
   .forEach(key => {
     initialState[key] = fromJS(initialState[key]);
   });
-  
-/**
- * Create all the stores for redux 
- */
-
-const reducer = combineReducers(reducers);
-const store = applyMiddleware(thunk)(createStore)(reducer);
-
 
 /**
  * Render to the DOM

@@ -21,7 +21,7 @@ export function getPersonsAsync() {
     .then(res => {
       dispatch(loadingAction(false));
       dispatch(getPersons(res.data));
-      return true;
+      return res.data;
     })
     .catch(err => {
       return err;
@@ -48,7 +48,7 @@ export function getPersonAsync(id) {
     .then(res => {
       dispatch(loadingAction(false));
       dispatch(getPerson(res.data));
-      return true;
+      return res.data;
     })
     .catch(err => {
       return err;
@@ -75,7 +75,7 @@ export function addPersonAsync(person) {
     .then(res => {
       dispatch(loadingAction(false));
       dispatch(addPerson(res.data));
-      return true;
+      return res.data;
     })
     .catch(err => {
       return err;
@@ -103,7 +103,7 @@ export function updatePersonAsync(id, person) {
     .then(res => {
       dispatch(loadingAction(false));
       dispatch(updatePerson(res.data));
-      return true;
+      return res.data;
     })
     .catch(err => {
       return err;
@@ -134,7 +134,7 @@ export function deletePersonAsync(id) {
     .then(res => {
       dispatch(loadingAction(false));
       dispatch(deletePersonFromList(id));
-      return true;
+      return res.data;
     })
     .catch(err => {
       return err;

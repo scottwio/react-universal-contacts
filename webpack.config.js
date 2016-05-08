@@ -5,15 +5,19 @@ var env = 'DEV';
 
 const webpackConfig = {
   resolve: {
+    alias: {
+      client: '/client/index.js'
+    },
     modulesDirectories: ['node_modules', 'shared'],
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
   },
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.js?$/,
         exclude: /node_modules/,
-        loaders: ['react-hot', 'babel']
+        //loaders: ['react-hot', 'babel'],
+        loaders: ['babel']
       },
       {
         test: /\.scss$/,
@@ -51,15 +55,21 @@ webpackConfig.output = {
 // Plugins
 webpackConfig.plugins = [];
 
+var defines = {
+  __SERVER__: false
+}
+
 if (env === 'DEV') {
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin(defines)
   )
 } else if (env === 'PROD') {
   webpackConfig.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
+    new webpack.DefinePlugin(defines),
     new CopyWebpackPlugin([{ from: 'shared/assets' }, {to:'assets'}]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {

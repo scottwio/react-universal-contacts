@@ -1,3 +1,4 @@
+
 // libs
 import express from 'express';
 import React from 'react';
@@ -13,9 +14,10 @@ import applyMiddleware from 'redux-universal';
 
 // ours
 import routes from 'routes';
-import * as reducers from 'reducers';
 import api from './api';
 import bodyParser from 'body-parser';
+
+import store from 'store.js'
 
 const app = express();
 
@@ -52,15 +54,7 @@ app.use((req, res) => {
 
   const location = createLocation(req.url);
 
-  /**
-   * Redux bring in reducers and stores
-   */
-  const reducer = combineReducers(reducers);
-  const createStoreWithMiddlewares = applyMiddleware(thunk)(createStore);
-  function configureStore(initialState = {}) {
-    return createStoreWithMiddlewares(reducer, initialState);
-  }
-  const store = configureStore();
+
 
   /**
    * User react-router to match the current

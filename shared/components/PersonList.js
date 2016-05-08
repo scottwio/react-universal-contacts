@@ -8,11 +8,12 @@ export class PersonList extends React.Component {
       <section className="PersonList">
       <VelocityTransitionGroup enter={{ animation: "slideDown", stagger: 400 }} leave={{ animation: "slideUp", stagger: 400 }}>
         {this.props.persons.map(person => (
+          
           <Person
             key={person.id}
             id={person.id}
             firstName={person.firstName}
-            secondName={person.lastName}
+            lastName={person.lastName}
             phone={person.phone}
             edit={this.props.edit}
             deletePerson={this.props.deletePersonAsync}
